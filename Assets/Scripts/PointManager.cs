@@ -6,10 +6,14 @@ using UnityEngine.UI;
 public class PointManager : MonoBehaviour
 {
     private GameObject point;
+    private LineRenderer line;
+    private ClosestPairOfPoints closestPairOfPoints;
 
     private void Start()
     {
         point = Resources.Load<GameObject>("Prefabs/Point");
+        line = GetComponent<LineRenderer>();
+        closestPairOfPoints = new ClosestPairOfPoints();
     }
 
     private void Update()
@@ -17,10 +21,30 @@ public class PointManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             DefaultPoints();
+            Distance smallestDistance = closestPairOfPoints.Calculate(GetPoints());
+
+            smallestDistance.firstPoint.GetComponent<SpriteRenderer>().color = Color.red;
+            smallestDistance.secondPoint.GetComponent<SpriteRenderer>().color = Color.red;
+
+            line.SetPositions(new Vector3[]
+            {
+                smallestDistance.firstPoint.position,
+                smallestDistance.secondPoint.position
+            });
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             RandomPoints();
+            Distance smallestDistance = closestPairOfPoints.Calculate(GetPoints());
+
+            smallestDistance.firstPoint.GetComponent<SpriteRenderer>().color = Color.red;
+            smallestDistance.secondPoint.GetComponent<SpriteRenderer>().color = Color.red;
+
+            line.SetPositions(new Vector3[]
+            {
+                smallestDistance.firstPoint.position,
+                smallestDistance.secondPoint.position
+            });
         }
     }
 
